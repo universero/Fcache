@@ -9,16 +9,16 @@ import (
 // A Getter loads data for a key
 type Getter interface {
 	// Get is a callback function,
-	Get(key []byte) ([]byte, error)
+	Get(key string) ([]byte, error)
 }
 
 // A GetterFunc implements Getter with a function
-type GetterFunc func(key []byte) ([]byte, error)
+type GetterFunc func(key string) ([]byte, error)
 
 // Get implements Getter interface function
 // 接口型函数，只有在接口中只有一个方法时可以使用
 // 使用接口型函数，可以同时接受实现了接口的struct和func，更加灵活、便捷
-func (f GetterFunc) Get(key []byte) ([]byte, error) {
+func (f GetterFunc) Get(key string) ([]byte, error) {
 	return f(key)
 }
 
