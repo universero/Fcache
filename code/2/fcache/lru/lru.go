@@ -83,7 +83,7 @@ func (c *Cache) Add(key string, value Value) {
 		c.cache[key] = ele
 		c.nbytes += int64(len(key)) + int64(value.Len())
 	}
-	// remove the oldecdst entry to maintain the maximum bytes constraint
+	// remove the oldest entry to maintain the maximum bytes constraint
 	// when maxBytes is zero, it means there is no constraint
 	for c.maxBytes != 0 && c.maxBytes < c.nbytes {
 		c.RemoveOldest()

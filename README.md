@@ -9,7 +9,7 @@ the document only record some personally important part for me, and the change o
 ```text
 ├─code: related codes
 |
-└─doc: related documents
+└─README.md: related documents
 ```
 
 
@@ -96,3 +96,13 @@ func main() {
 
 Using `Lock()` and `UnLock()` to wrap the access to the set, and there will be no conflict
 The programme will print only once
+
+## Group
+
+                                     Y
+accept key --> check whether cache -----> return the cache value ⑴
+                |  N                                 Y
+                |-----> whether get from the remote -----> 与远程节点交互 --> return the value ⑵
+                                             |  N
+                                             |-----> call `callback function`，get the value and add it to the cache --> return the value
+
