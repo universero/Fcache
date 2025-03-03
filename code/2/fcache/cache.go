@@ -12,6 +12,7 @@ type cache struct {
 	cacheBytes int64
 }
 
+// add the key and value mutually exclusive
 func (c *cache) add(key string, value ByteView) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -21,6 +22,7 @@ func (c *cache) add(key string, value ByteView) {
 	c.lru.Add(key, value)
 }
 
+// get the value of the key mutually exclusive
 func (c *cache) get(key string) (value ByteView, ok bool) {
 	c.mu.Lock()
 	defer c.mu.Unlock()

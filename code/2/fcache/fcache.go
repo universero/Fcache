@@ -15,9 +15,9 @@ type Getter interface {
 // A GetterFunc implements Getter with a function
 type GetterFunc func(key string) ([]byte, error)
 
-// Get implements Getter interface function
-// 接口型函数，只有在接口中只有一个方法时可以使用
-// 使用接口型函数，可以同时接受实现了接口的struct和func，更加灵活、便捷
+// Get implements Getter interface function.
+// interface function, only one function in the interface can be used.
+// with it, we can use both struct and func as the parameter.
 func (f GetterFunc) Get(key string) ([]byte, error) {
 	return f(key)
 }
@@ -34,6 +34,7 @@ var (
 	groups = make(map[string]*Group)
 )
 
+// NewGroup initialise a group, and set it in the map called groups
 func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
 	if getter == nil {
 		panic("nil getter")
@@ -49,6 +50,7 @@ func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
 	return g
 }
 
+// GetGroup returns the group according to the name with read only mutex
 func GetGroup(name string) *Group {
 	// Read only lock
 	mu.RLock()
@@ -57,6 +59,9 @@ func GetGroup(name string) *Group {
 	return g
 }
 
+// Get returns the value according to the key
+// if the key is empty, it will return a new ByteView and log an error
+// if the key doesn't exist, try to load it from the other data source
 func (g *Group) Get(key string) (ByteView, error) {
 	if key == "" {
 		return ByteView{}, fmt.Errorf("key is required")
@@ -70,10 +75,13 @@ func (g *Group) Get(key string) (ByteView, error) {
 	return g.load(key)
 }
 
+// load data from other data source
+// it will be expanded latter
 func (g *Group) load(key string) (ByteView, error) {
 	return g.getLocally(key)
 }
 
+// getLocally uses the getter to load the missing key
 func (g *Group) getLocally(key string) (ByteView, error) {
 	bytes, err := g.getter.Get(key)
 	if err != nil {
@@ -85,6 +93,7 @@ func (g *Group) getLocally(key string) (ByteView, error) {
 	return value, nil
 }
 
+// populateCache adds the new key-value in the cache
 func (g *Group) populateCache(key string, value ByteView) {
 	g.mainCache.add(key, value)
 }
