@@ -75,7 +75,7 @@ func (c *Cache) Add(key string, value Value) {
 		// when the key exists, update it
 		c.ll.MoveToFront(ele)
 		kv := ele.Value.(*entry)
-		c.nbytes += int64(len(kv.key)) + int64(kv.value.Len())
+		c.nbytes += int64(value.Len()) - int64(kv.value.Len())
 		kv.value = value
 	} else {
 		// when the key is not existing, add it

@@ -102,7 +102,7 @@ The programme will print only once
                                      Y
 accept key --> check whether cache -----> return the cache value ⑴
                 |  N                                 Y
-                |-----> whether get from the remote -----> 与远程节点交互 --> return the value ⑵
+                |-----> whether to get from the remote -----> 与远程节点交互 --> return the value ⑵
                                              |  N
                                              |-----> call `callback function`，get the value and add it to the cache --> return the value
 
