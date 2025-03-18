@@ -147,3 +147,20 @@ If there is not enough nodes, it may happen that a node holds most keys, and oth
 To solve it, we can use virtual node(a real nodes correspond to multiple virtual node) to balance the load of different
 nodes.
 
+## Get cache from Distribute Node
+
+When a key missed, cache will try to load it from data source before, now in this part (code/4), it will try to load
+from other distribute node first;
+
+## single flight
+
+If a key is required concurrently, there will be lost of requests send to other peer to find the same key. However, in
+fact, we only need to send only one
+request to sever all the key required. So we use the single flight to do that multiple access to a key in a short time
+and only one request to other peer;
+
+## TODO
+
+Now only the response use the proto, but the request is still based on the http.
+May can change it to pure proto and rpc;
+Also after learning distribute system, maybe can optimize and improve the whole project;
